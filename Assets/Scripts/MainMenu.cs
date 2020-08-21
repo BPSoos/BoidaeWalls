@@ -16,6 +16,22 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex  + 1);
     }
 
+    private bool all_colors_selected = false;
+    private List<PlayerData> active_players_data = new List<PlayerData>();
+
+    private string GetActivePlayersData(){
+        string data_as_string = "";
+        foreach(PlayerData player_data in active_players_data){
+            data_as_string += player_data.id; 
+            data_as_string += " player with name ";
+            data_as_string += player_data.Player_name;
+            data_as_string += " has color: ";
+            data_as_string += player_data.Player_color;
+            data_as_string +="    ";
+        }
+        return data_as_string;
+    }
+
     void Start(){
         for (int i = 0; i < 8; i++){        
         AddPlayer();
@@ -36,14 +52,17 @@ public class MainMenu : MonoBehaviour
     }
 
     public void AddPlayerButton(){
+        int id = 0;
         if (first_empty_slot < 8){
             for (int i = 0; i < 8; i++){
                 if (!(addedPlayersList[i].gameObject.activeSelf) &&
                                 (addedPlayersList[i].player_y_slot == first_empty_slot)){
                     addedPlayersList[i].gameObject.SetActive(true);
                     addedPlayersList[i].ChangeInputFieldText("New Player " + (first_empty_slot + 1).ToString());
+                    id = i;
                 }
             }
+            active_players_data.Add(new PlayerData("", ("New Player " + (first_empty_slot + 1).ToString()), id));
             first_empty_slot ++;
         }else{
             Debug.Log("Max Players reached");
@@ -56,6 +75,12 @@ public class MainMenu : MonoBehaviour
                 addedPlayersList[i].SetColorAvailable(set_state, color_of_button);
             }
         }
+        for (int i = 0; i < active_players_data.Count; i++){
+            if (active_players_data[i].id == player_index_who_choose){       
+                active_players_data[player_index_who_choose].SetColorBasedOnButtonClick(set_state, color_of_button);
+                Debug.Log(GetActivePlayersData());
+            }
+        }        
     }
 
     public void PlayerRemoved(int player_slot, int player_count){
@@ -66,16 +91,45 @@ public class MainMenu : MonoBehaviour
             }
         }
         addedPlayersList[player_count].UpdatePosition(7);
+        for (int i = 0; i < active_players_data.Count; i++){
+            if (active_players_data[i].id == i){
+                Debug.Log("Removing player: " + i.ToString());
+                active_players_data.RemoveAt(i);
+                Debug.Log(GetActivePlayersData());
+            }
+        }
         first_empty_slot --;
     }
 }
 
 public class PlayerData
-{
+{   
+    public int id;
     private string player_color;
-    private string player_name;
-    public PlayerData(string color, string name){
-        player_color = color;
-        player_name = name;
+    public string Player_color 
+    {
+        get { return player_color; }
+        set { player_color = value;}
     }
+    private string player_name;
+    public string Player_name
+    {
+        get { return player_name; }
+        set { player_name = value; }
+    }
+
+    public PlayerData(string color, string name, int id){
+        Player_color = color;
+        Player_name = name;
+        Debug.Log(name + " added with id: " + id);
+    }
+
+    public void SetColorBasedOnButtonClick(bool set_state, string color){
+        if (set_state){
+            Player_color = "";
+        }else{
+            Player_color = color;
+        }
+    }
+
 }

@@ -10,6 +10,7 @@ TagManager:
   - CyanButton
   - InputNameText
   - ColorButton
+  - deadlyObject
   layers:
   - Default
   - TransparentFX
