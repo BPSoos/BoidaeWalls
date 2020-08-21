@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 
@@ -35,18 +36,26 @@ public class MainMenu : MonoBehaviour
     }
 
     public void AddPlayerButton(){
-        for (int i = 0; i < 8; i++){
-            if (!(addedPlayersList[i].gameObject.activeSelf) &&
-                            (addedPlayersList[i].player_y_slot == first_empty_slot)){
-                addedPlayersList[i].gameObject.SetActive(true);
+        if (first_empty_slot < 8){
+            for (int i = 0; i < 8; i++){
+                if (!(addedPlayersList[i].gameObject.activeSelf) &&
+                                (addedPlayersList[i].player_y_slot == first_empty_slot)){
+                    addedPlayersList[i].gameObject.SetActive(true);
+                    addedPlayersList[i].ChangeInputFieldText("New Player " + (first_empty_slot + 1).ToString());
+                }
             }
-        }        
-        first_empty_slot ++;
-        Debug.Log("first_empty_slot: " + first_empty_slot.ToString());
+            first_empty_slot ++;
+        }else{
+            Debug.Log("Max Players reached");
+        }
     }
 
-    public void ChooseColor(string color_chosen){
-    Debug.Log(color_chosen);
+    public void PlayerColorSelected(bool set_state, string color_of_button, int player_index_who_choose){
+        for (int i = 0; i < 8; i++){
+            if (i != player_index_who_choose){
+                addedPlayersList[i].SetColorAvailable(set_state, color_of_button);
+            }
+        }
     }
 
     public void PlayerRemoved(int player_slot, int player_count){
@@ -58,7 +67,15 @@ public class MainMenu : MonoBehaviour
         }
         addedPlayersList[player_count].UpdatePosition(7);
         first_empty_slot --;
-        Debug.Log("first_empty_slot: " + first_empty_slot.ToString());
+    }
+}
 
+public class PlayerData
+{
+    private string player_color;
+    private string player_name;
+    public PlayerData(string color, string name){
+        player_color = color;
+        player_name = name;
     }
 }
