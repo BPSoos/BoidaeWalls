@@ -59,7 +59,14 @@ public class MainMenu : MonoBehaviour
                 if (!(addedPlayersList[i].gameObject.activeSelf) &&
                                 (addedPlayersList[i].player_y_slot == first_empty_slot)){
                     addedPlayersList[i].gameObject.SetActive(true);
-                    addedPlayersList[i].ChangeInputFieldText("New Player " + (first_empty_slot + 1).ToString());
+                    if (i == 0)
+                        addedPlayersList[i].ChangeInputFieldText("Player " + (first_empty_slot + 1).ToString() + ": left right");
+                    if (i == 1)
+                        addedPlayersList[i].ChangeInputFieldText("Player " + (first_empty_slot + 1).ToString() + ": 1 Q");
+                    if (i == 2)
+                        addedPlayersList[i].ChangeInputFieldText("Player " + (first_empty_slot + 1).ToString() + ": 5 6 ");
+                    if (i == 3)
+                        addedPlayersList[i].ChangeInputFieldText("Player " + (first_empty_slot + 1).ToString() + ": K L");
                 }
             }
             if (first_empty_slot == 0)
