@@ -12,10 +12,17 @@ public class MainMenu : MonoBehaviour
     public PlayerUI playerClass;
     public List<PlayerUI> addedPlayersList;
     private int first_empty_slot = 0;
+    private bool initialized_first_player = false;
     public void PlayGame(){
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex  + 1);
     }
 
+    void Update() {
+        if (initialized_first_player)
+            return;
+        AddPlayerButton();
+        initialized_first_player = true;
+    }
     void Start(){
         for (int i = 0; i < 8; i++){        
         AddPlayer();
@@ -44,6 +51,8 @@ public class MainMenu : MonoBehaviour
                     addedPlayersList[i].ChangeInputFieldText("New Player " + (first_empty_slot + 1).ToString());
                 }
             }
+            if (first_empty_slot == 0)
+                transform.Find("PlayButton").gameObject.SetActive(true);
             first_empty_slot ++;
         }else{
             Debug.Log("Max Players reached");
@@ -67,6 +76,8 @@ public class MainMenu : MonoBehaviour
         }
         addedPlayersList[player_count].UpdatePosition(7);
         first_empty_slot --;
+        if (first_empty_slot == 0)
+            transform.Find("PlayButton").gameObject.SetActive(false);
     }
 }
 
