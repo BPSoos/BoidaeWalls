@@ -25,7 +25,14 @@ public class BoaBody : MonoBehaviour
         head_col = transform.parent.GetComponentInChildren<CircleCollider2D>();
         head_col.enabled = false;
 
-
+        for(int i = 1; i < 5; i++){
+            if (transform.parent.name.Contains(i.ToString()))
+            {
+                line.startColor = PlayerData.game_players[i-1].player_color;
+                line.endColor = PlayerData.game_players[i-1].player_color;
+                myHead.GetComponent<SpriteRenderer>().color = PlayerData.game_players[i-1].player_color;
+            }
+        }
         points = new List<Vector2>();
         myHead.position = new Vector3(Random.Range(-35, 35), Random.Range(-35, 35), 0);
         myHead.Rotate(Vector3.forward * Random.Range(0, 360));

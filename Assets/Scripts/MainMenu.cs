@@ -13,14 +13,25 @@ public class MainMenu : MonoBehaviour
     public List<PlayerUI> addedPlayersList;
     private int first_empty_slot = 0;
     private bool initialized_first_player = false;
+    public static int test_player_amount = 4;
     public void PlayGame(){
+        for (int i =0; i < test_player_amount; i++){
+        Player add_me = new Player(addedPlayersList[i].player_count, PlayerData.basic_color_dict[addedPlayersList[i].current_color]);
+        PlayerData.game_players.Add(add_me);
+        Debug.Log(PlayerData.game_players[i].player_id.ToString() + " player added with color " + PlayerData.game_players[i].player_color.ToString());
+        }
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex  + 1);
     }
 
     void Update() {
         if (initialized_first_player)
             return;
-        AddPlayerButton();
+        for (int i = 0; i < test_player_amount; i++)
+        {
+            AddPlayerButton();
+            //PlayerData.game_players.Add(new PlayerData.Player(i, new Color32(55, 169, 64, 255)));
+        }
         initialized_first_player = true;
     }
     void Start(){
@@ -78,15 +89,5 @@ public class MainMenu : MonoBehaviour
         first_empty_slot --;
         if (first_empty_slot == 0)
             transform.Find("PlayButton").gameObject.SetActive(false);
-    }
-}
-
-public class PlayerData
-{
-    private string player_color;
-    private string player_name;
-    public PlayerData(string color, string name){
-        player_color = color;
-        player_name = name;
     }
 }
