@@ -16,9 +16,11 @@ public class MainMenu : MonoBehaviour
     public static int test_player_amount = 4;
     public void PlayGame(){
         for (int i =0; i < test_player_amount; i++){
-        Player add_me = new Player(addedPlayersList[i].player_count, PlayerData.basic_color_dict[addedPlayersList[i].current_color]);
+        Player add_me = new Player(addedPlayersList[i].player_count,
+                            PlayerData.basic_color_dict[addedPlayersList[i].current_color]);
         PlayerData.game_players.Add(add_me);
-        Debug.Log(PlayerData.game_players[i].player_id.ToString() + " player added with color " + PlayerData.game_players[i].player_color.ToString());
+        Debug.Log(PlayerData.game_players[i].player_id.ToString() + " player added with color " +
+                            PlayerData.game_players[i].player_color.ToString());
         }
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex  + 1);
@@ -35,8 +37,9 @@ public class MainMenu : MonoBehaviour
         initialized_first_player = true;
     }
     void Start(){
-        for (int i = 0; i < 8; i++){        
-        AddPlayer();
+        for (int i = 0; i < 8; i++){
+            Debug.Log("adding player...");
+            AddPlayer();
         }
     }
 

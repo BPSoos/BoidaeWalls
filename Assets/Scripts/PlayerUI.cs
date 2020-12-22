@@ -55,7 +55,7 @@ public class PlayerUI : MonoBehaviour
     {
         foreach (Transform player_item in transform)
         {
-            Vector3 new_position = new Vector3(player_item.transform.position.x, 500 - new_slot * 40 , 0);
+            Vector3 new_position = new Vector3(player_item.transform.position.x, 250 - new_slot * 40 , 0);
             player_item.position = new_position;
             player_y_slot = new_slot;
         }
