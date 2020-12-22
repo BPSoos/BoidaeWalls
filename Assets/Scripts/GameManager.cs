@@ -1,18 +1,19 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
 {
     
-    private bool hasEnded = false;
+    private bool _hasEnded = false;
 
-    public int dead_players = 0;
+    [FormerlySerializedAs("dead_players")] public int deadPlayers = 0;
 
     public void EndGame (){
-        if(hasEnded)
+        if(_hasEnded)
             return;
-        hasEnded = true;
+        _hasEnded = true;
         StartCoroutine(PlayEndGameAnimation ());
     }
 

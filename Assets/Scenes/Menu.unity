@@ -1096,7 +1096,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1056572198
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1161,7 +1161,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1692206256}
-        m_MethodName: AddPlayerButton
+        m_MethodName: AddPlayerButtonPress
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1824,6 +1824,7 @@ MonoBehaviour:
   playerClass: {fileID: 231455207162865465, guid: 6a64ea96161ffd74cbd5b4d389b09a1c,
     type: 3}
   addedPlayersList: []
+  TestPlayerAmount: 2
 --- !u!1 &2054129957
 GameObject:
   m_ObjectHideFlags: 0

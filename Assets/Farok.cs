@@ -9,20 +9,20 @@ public class Farok : MonoBehaviour
 {
     public float pointSpacing = 0.5f;    
 
-    List<Vector2> points;    
+    List<Vector2> _points;    
 
-    LineRenderer line;
-    EdgeCollider2D col;
+    LineRenderer _line;
+    EdgeCollider2D _col;
 
     public Transform myHead;
     
     // Start is called before the first frame update
     void Start()
     {
-        line = GetComponent<LineRenderer>();
-        col = GetComponent<EdgeCollider2D>();
+        _line = GetComponent<LineRenderer>();
+        _col = GetComponent<EdgeCollider2D>();
 
-        points = new List<Vector2>();
+        _points = new List<Vector2>();
         SetPoint();
     }
 
@@ -30,20 +30,20 @@ public class Farok : MonoBehaviour
     void Update()
     {
         
-        if(Vector3.Distance(points.Last(), myHead.position) > pointSpacing)
+        if(Vector3.Distance(_points.Last(), myHead.position) > pointSpacing)
             SetPoint();
 
     }
 
     void SetPoint ()
     {
-        if (points.Count > 1)
-            col.points = points.ToArray<Vector2>();
+        if (_points.Count > 1)
+            _col.points = _points.ToArray<Vector2>();
 
-        points.Add(myHead.position);
+        _points.Add(myHead.position);
 
-        line.positionCount = points.Count;
-        line.SetPosition(points.Count -1, myHead.position);
+        _line.positionCount = _points.Count;
+        _line.SetPosition(_points.Count -1, myHead.position);
 
     }
 }

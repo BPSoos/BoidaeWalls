@@ -10,30 +10,30 @@ public class BoaBody : MonoBehaviour
     
     public float pointSpacing = .5f;
     public Transform myHead;
-    LineRenderer line;
-    EdgeCollider2D col;
-    CircleCollider2D head_col;
+    LineRenderer _line;
+    EdgeCollider2D _col;
+    CircleCollider2D _headCol;
 
-    private bool set_points = false;
+    private bool _setPoints = false;
 
-    List<Vector2> points;
+    List<Vector2> _points;
     // Start is called before the first frame update
     void Start()
     {
-        line = GetComponent<LineRenderer>();
-        col = GetComponent<EdgeCollider2D>();
-        head_col = transform.parent.GetComponentInChildren<CircleCollider2D>();
-        head_col.enabled = false;
+        _line = GetComponent<LineRenderer>();
+        _col = GetComponent<EdgeCollider2D>();
+        _headCol = transform.parent.GetComponentInChildren<CircleCollider2D>();
+        _headCol.enabled = false;
 
         for(int i = 1; i < 5; i++){
             if (transform.parent.name.Contains(i.ToString()))
             {
-                line.startColor = PlayerData.game_players[i-1].player_color;
-                line.endColor = PlayerData.game_players[i-1].player_color;
-                myHead.GetComponent<SpriteRenderer>().color = PlayerData.game_players[i-1].player_color;
+                _line.startColor = PlayerData.GamePlayers[i-1].PlayerColor;
+                _line.endColor = PlayerData.GamePlayers[i-1].PlayerColor;
+                myHead.GetComponent<SpriteRenderer>().color = PlayerData.GamePlayers[i-1].PlayerColor;
             }
         }
-        points = new List<Vector2>();
+        _points = new List<Vector2>();
         myHead.position = new Vector3(Random.Range(-35, 35), Random.Range(-35, 35), 0);
         myHead.Rotate(Vector3.forward * Random.Range(0, 360));
         
@@ -44,29 +44,29 @@ public class BoaBody : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!set_points)
+        if (!_setPoints)
             return;
-        if (points.Count == 0)
+        if (_points.Count == 0)
             SetPoint();
-        else if (Vector3.Distance(points.Last(), myHead.position) > pointSpacing)
+        else if (Vector3.Distance(_points.Last(), myHead.position) > pointSpacing)
             SetPoint();
     }
 
     void SetPoint (){
-        if (points.Count > 1)
-            col.points = points.ToArray<Vector2>();
+        if (_points.Count > 1)
+            _col.points = _points.ToArray<Vector2>();
 
-        points.Add(myHead.position);
+        _points.Add(myHead.position);
 
-        line.positionCount = points.Count;
-        line.SetPosition(points.Count -1, myHead.position);
+        _line.positionCount = _points.Count;
+        _line.SetPosition(_points.Count -1, myHead.position);
 
     }
 
     IEnumerator StartDrawing ()
     {
         yield return new WaitForSeconds(2f);
-        set_points = true;
-        head_col.enabled = true;
+        _setPoints = true;
+        _headCol.enabled = true;
     }
 }

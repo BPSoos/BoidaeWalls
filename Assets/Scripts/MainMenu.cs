@@ -11,36 +11,28 @@ public class MainMenu : MonoBehaviour
 {
     public PlayerUI playerClass;
     public List<PlayerUI> addedPlayersList;
-    private int first_empty_slot = 0;
-    private bool initialized_first_player = false;
-    public static int test_player_amount = 4;
+    private int _firstEmptySlot = 0;
+    private int _maxPlayerCount = 8;
+    public int TestPlayerAmount;
     public void PlayGame(){
-        for (int i =0; i < test_player_amount; i++){
-        Player add_me = new Player(addedPlayersList[i].player_count,
-                            PlayerData.basic_color_dict[addedPlayersList[i].current_color]);
-        PlayerData.game_players.Add(add_me);
-        Debug.Log(PlayerData.game_players[i].player_id.ToString() + " player added with color " +
-                            PlayerData.game_players[i].player_color.ToString());
+        for (int i =0; i < TestPlayerAmount; i++){
+            var addMe = new Player(addedPlayersList[i].serialNumber,
+                            PlayerData.BasicColorDict[addedPlayersList[i].currentColor]);
+        PlayerData.GamePlayers.Add(addMe);
+        
+        Debug.Log(PlayerData.GamePlayers[i].PlayerID.ToString() + " player added with color " +
+                            PlayerData.GamePlayers[i].PlayerColor.ToString());
         }
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex  + 1);
     }
 
     void Update() {
-        if (initialized_first_player)
-            return;
-        for (int i = 0; i < test_player_amount; i++)
-        {
-            AddPlayerButton();
-            //PlayerData.game_players.Add(new PlayerData.Player(i, new Color32(55, 169, 64, 255)));
-        }
-        initialized_first_player = true;
+        
     }
-    void Start(){
-        for (int i = 0; i < 8; i++){
-            Debug.Log("adding player...");
-            AddPlayer();
-        }
+    void Start()
+    {
+        initPlayerObjects(2);
     }
 
     public void QuitGame(){
@@ -49,55 +41,59 @@ public class MainMenu : MonoBehaviour
     }
 
     public void AddPlayer(){
-        PlayerUI new_player_object = Instantiate(playerClass);
-        new_player_object.transform.SetParent(this.transform, false);
-        new_player_object.UpdatePosition(addedPlayersList.Count);
-        new_player_object.player_count = addedPlayersList.Count;
-        addedPlayersList.Add(new_player_object);
+        PlayerUI newPlayerObject = Instantiate(playerClass, this.transform, false);
+        newPlayerObject.UpdatePosition(addedPlayersList.Count);
+        newPlayerObject.serialNumber = addedPlayersList.Count;
+        newPlayerObject.gameObject.SetActive(false);
+        addedPlayersList.Add(newPlayerObject);
     }
 
-    public void AddPlayerButton(){
-        if (first_empty_slot < 8){
-            for (int i = 0; i < 8; i++){
-                if (!(addedPlayersList[i].gameObject.activeSelf) &&
-                                (addedPlayersList[i].player_y_slot == first_empty_slot)){
-                    addedPlayersList[i].gameObject.SetActive(true);
-                    if (i == 0)
-                        addedPlayersList[i].ChangeInputFieldText("Player " + (first_empty_slot + 1).ToString() + ": left right");
-                    if (i == 1)
-                        addedPlayersList[i].ChangeInputFieldText("Player " + (first_empty_slot + 1).ToString() + ": 1 Q");
-                    if (i == 2)
-                        addedPlayersList[i].ChangeInputFieldText("Player " + (first_empty_slot + 1).ToString() + ": 5 6 ");
-                    if (i == 3)
-                        addedPlayersList[i].ChangeInputFieldText("Player " + (first_empty_slot + 1).ToString() + ": K L");
+    public void AddPlayerButtonPress(){
+        if (_firstEmptySlot < _maxPlayerCount){
+            AddPlayer();
+            foreach (var addedPlayer in addedPlayersList)
+            {
+                if ((addedPlayer.PlayerYSlot == _firstEmptySlot)){
+                    Debug.Log("I'm in");
+                    break;
                 }
             }
-            if (first_empty_slot == 0)
-                transform.Find("PlayButton").gameObject.SetActive(true);
-            first_empty_slot ++;
+            if (_firstEmptySlot == 0)
+                transform.Find("AddButton").gameObject.SetActive(true);
+            _firstEmptySlot ++;
         }else{
             Debug.Log("Max Players reached");
         }
     }
 
-    public void PlayerColorSelected(bool set_state, string color_of_button, int player_index_who_choose){
-        for (int i = 0; i < 8; i++){
-            if (i != player_index_who_choose){
-                addedPlayersList[i].SetColorAvailable(set_state, color_of_button);
+    public void initPlayerObjects(int activePlayerCount = 0)
+    {
+        for (int i = 0; i < _maxPlayerCount; i++)
+        {
+            AddPlayer();
+            if (i < activePlayerCount)
+                addedPlayersList[i].gameObject.SetActive(true);
+        }
+    }
+
+    public void PlayerColorSelected(bool setState, string colorOfButton, int playerIndexWhoChoose){
+        for (int i = 0; i < _maxPlayerCount; i++){
+            if (i != playerIndexWhoChoose){
+                addedPlayersList[i].SetColorAvailable(setState, colorOfButton);
             }
         }
     }
 
-    public void PlayerRemoved(int player_slot, int player_count){
-        int last_slot = player_slot;
-        for (int i = 0; i < 8; i++){
-            if (addedPlayersList[i].player_y_slot > player_slot){
-                 addedPlayersList[i].UpdatePosition(addedPlayersList[i].player_y_slot - 1);
+    public void PlayerRemoved(int playerSlot, int playerCount){
+        int lastSlot = playerSlot;
+        for (int i = 0; i < _maxPlayerCount; i++){
+            if (addedPlayersList[i].PlayerYSlot > playerSlot){
+                 addedPlayersList[i].UpdatePosition(addedPlayersList[i].PlayerYSlot - 1);
             }
         }
-        addedPlayersList[player_count].UpdatePosition(7);
-        first_empty_slot --;
-        if (first_empty_slot == 0)
+        addedPlayersList[playerCount].UpdatePosition(7);
+        _firstEmptySlot --;
+        if (_firstEmptySlot == 0)
             transform.Find("PlayButton").gameObject.SetActive(false);
     }
 }

@@ -2,24 +2,25 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class Player
 {
-    public int player_id { get; set; }
-    public Color32 player_color { get; set; }
+    public int PlayerID { get; private set; }
+    public Color32 PlayerColor { get; private set; }
     public Player(int id, Color32 color)
     {
-        player_id = id;
-        player_color = color;
+        PlayerID = id;
+        PlayerColor = color;
     }
 }
 
 public static class PlayerData
     {
-        public static List<Player> game_players = new List<Player>();
+        public static List<Player> GamePlayers = new List<Player>();
 
-        public static Dictionary<string, Color32> basic_color_dict = new Dictionary<string, Color32>
+        public static readonly Dictionary<string, Color32> BasicColorDict = new Dictionary<string, Color32>
         {
             { "Army", new Color32(55, 169, 64, 255)},
             { "Blue", new Color32(64, 68, 226, 255)},
@@ -38,35 +39,35 @@ public static class PlayerData
 public class PlayerUI : MonoBehaviour
 {   
     public GameObject[] playerPrefabs = new GameObject[4];
-    public int player_y_slot {get; set;}
-    public int player_count {get; set;}
-    public InputField player_name;
+    public int PlayerYSlot {get; private set;}
+    public int serialNumber {get; set;}
+    [FormerlySerializedAs("player_name")] public InputField playerName;
 
-    public string current_color = "";
+    [FormerlySerializedAs("current_color")] public string currentColor = "";
    
     
     void Start()
     {
-        transform.gameObject.SetActive(false);
         InitializeButtons();
     }
 
-    public void UpdatePosition(int new_slot)
+    public void UpdatePosition(int newSlot)
     {
-        foreach (Transform player_item in transform)
+        foreach (Transform playerItem in transform)
         {
-            Vector3 new_position = new Vector3(player_item.transform.position.x, 250 - new_slot * 40 , 0);
-            player_item.position = new_position;
-            player_y_slot = new_slot;
+            Vector3 newPosition = new Vector3(playerItem.transform.position.x, 250 - newSlot * 40 , 0);
+            playerItem.position = newPosition;
+            PlayerYSlot = newSlot;
         }
     }
 
     public void RemoveButton()
     {
         transform.gameObject.SetActive(false);
-        transform.parent.GetComponent<MainMenu>().PlayerRemoved(player_y_slot, player_count);
+        transform.parent.GetComponent<MainMenu>().PlayerRemoved(PlayerYSlot, serialNumber);
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     public void ChangeInputFieldText(string message)
     { 
          var textscript = transform.GetChild(1).Find("Text").GetComponent<Text>();
@@ -75,44 +76,42 @@ public class PlayerUI : MonoBehaviour
 
     }
 
-    public void InitializeButtons()
+    private void InitializeButtons()
     {
-        for (int i = 0; i < playerPrefabs.Length; i++)
+        foreach (var t in playerPrefabs)
         {
-            if (playerPrefabs[i].tag.Contains("ExitButton"))
-            {
-                Button button = playerPrefabs[i].GetComponent<Button>();
-                button.onClick.AddListener( ()=> RemoveButton() );
-            }
+            if (!t.tag.Contains("ExitButton")) continue;
+            var button = t.GetComponent<Button>();
+            button.onClick.AddListener( RemoveButton );
         }
     }
 
-    public void SetColorAvailable(bool set_state, string color_of_button){
-        foreach (Transform player_item in transform)
+    public void SetColorAvailable(bool setState, string colorOfButton){
+        foreach (Transform playerItem in transform)
         {
-            if (player_item.gameObject.name.Contains(color_of_button))            
-                player_item.gameObject.SetActive(set_state);
+            if (playerItem.gameObject.name.Contains(colorOfButton))            
+                playerItem.gameObject.SetActive(setState);
         }
     }
 
-    public void ColorSelected(string color_of_button)
+    public void ColorSelected(string colorOfButton)
     {
-        foreach (Transform player_item in transform)
+        foreach (Transform playerItem in transform)
         {
-            if (player_item.gameObject.name.Contains(color_of_button))
+            if (playerItem.gameObject.name.Contains(colorOfButton))
             {
-                bool button_currently_selected = (player_item.GetComponent<Image>().color == Color.grey);
-                if(button_currently_selected)                
-                    player_item.GetComponent<Image>().color = PlayerData.basic_color_dict[color_of_button];
+                bool buttonCurrentlySelected = (playerItem.GetComponent<Image>().color == Color.grey);
+                if(buttonCurrentlySelected)                
+                    playerItem.GetComponent<Image>().color = PlayerData.BasicColorDict[colorOfButton];
                 else
-                    player_item.GetComponent<Image>().color = Color.grey;                
-                transform.parent.GetComponent<MainMenu>().PlayerColorSelected(button_currently_selected, color_of_button, player_count);
-            }else if (current_color != "" && player_item.gameObject.name.Contains(current_color))
+                    playerItem.GetComponent<Image>().color = Color.grey;                
+                transform.parent.GetComponent<MainMenu>().PlayerColorSelected(buttonCurrentlySelected, colorOfButton, serialNumber);
+            }else if (currentColor != "" && playerItem.gameObject.name.Contains(currentColor))
             {
-                player_item.GetComponent<Image>().color = PlayerData.basic_color_dict[current_color];
-                transform.parent.GetComponent<MainMenu>().PlayerColorSelected(true, current_color, player_count);
+                playerItem.GetComponent<Image>().color = PlayerData.BasicColorDict[currentColor];
+                transform.parent.GetComponent<MainMenu>().PlayerColorSelected(true, currentColor, serialNumber);
             }
         }
-        current_color = color_of_button;
+        currentColor = colorOfButton;
     }
 }
