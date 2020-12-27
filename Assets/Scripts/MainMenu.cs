@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -50,16 +51,14 @@ public class MainMenu : MonoBehaviour
 
     public void AddPlayerButtonPress(){
         if (_firstEmptySlot < _maxPlayerCount){
-            AddPlayer();
             foreach (var addedPlayer in addedPlayersList)
             {
-                if ((addedPlayer.PlayerYSlot == _firstEmptySlot)){
-                    Debug.Log("I'm in");
+                if ((addedPlayer.PlayerYSlot == _firstEmptySlot))
+                {
+                    addedPlayer.gameObject.SetActive(true);
                     break;
                 }
             }
-            if (_firstEmptySlot == 0)
-                transform.Find("AddButton").gameObject.SetActive(true);
             _firstEmptySlot ++;
         }else{
             Debug.Log("Max Players reached");
@@ -71,8 +70,14 @@ public class MainMenu : MonoBehaviour
         for (int i = 0; i < _maxPlayerCount; i++)
         {
             AddPlayer();
-            if (i < activePlayerCount)
-                addedPlayersList[i].gameObject.SetActive(true);
+        }
+
+        for (int i = 0; i < activePlayerCount; i++)
+        {
+            {
+                AddPlayerButtonPress();
+                addedPlayersList[i].ColorSelected(PlayerData.BasicColorDict.Keys.ElementAt(i));
+            }
         }
     }
 
@@ -92,8 +97,10 @@ public class MainMenu : MonoBehaviour
             }
         }
         addedPlayersList[playerCount].UpdatePosition(7);
+        addedPlayersList[playerCount].ColorSelected(addedPlayersList[playerCount].currentColor);
         _firstEmptySlot --;
         if (_firstEmptySlot == 0)
             transform.Find("PlayButton").gameObject.SetActive(false);
+        
     }
 }
