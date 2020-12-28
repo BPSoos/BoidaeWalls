@@ -810,7 +810,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 5480723630282180121}
-        m_MethodName: AddPlayer
+        m_MethodName: AddPlayerObject
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

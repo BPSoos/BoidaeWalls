@@ -21,7 +21,7 @@ public class MainMenu : MonoBehaviour
         {
             if (addedPlayer.gameObject.activeSelf)
             {
-                Player addMe = new Player(id: addedPlayer.serialNumber,
+                GamePlayer addMe = new GamePlayer(id: addedPlayer.serialNumber,
                                         color: PlayerData.BasicColorDict[addedPlayer.currentColor],
                                         addedPlayer.playerLeftControl.GetComponent<TextMeshProUGUI>().text,
                                         addedPlayer.playerRightControl.GetComponent<TextMeshProUGUI>().text,
@@ -44,7 +44,7 @@ public class MainMenu : MonoBehaviour
         Application.Quit();
     }
 
-    public void AddPlayer(){
+    public void AddPlayerObject(){
         PlayerUI newPlayerObject = Instantiate(playerClass, this.transform, false);
         newPlayerObject.UpdatePosition(addedPlayersList.Count);
         newPlayerObject.serialNumber = addedPlayersList.Count;
@@ -70,13 +70,13 @@ public class MainMenu : MonoBehaviour
         }
     }
 
-    public void initPlayerObjects(int activePlayerCount = 0)
+    private void initPlayerObjects(int activePlayerCount = 0)
+    /* Instantiates all the Player1 objects needed, only activates a given amount*/
     {
         for (int i = 0; i < _maxPlayerCount; i++)
         {
-            AddPlayer();
+            AddPlayerObject();
         }
-
         for (int i = 0; i < activePlayerCount; i++)
         {
             {
@@ -95,7 +95,11 @@ public class MainMenu : MonoBehaviour
         }
     }
 
-    public void PlayerRemoved(int playerSlot, int playerCount){
+    public void RemovePlayer(int playerSlot, int playerCount){
+        /*  Disables the given Player1 object and organizes the UI correctly (positions, colors)
+         args:
+            playerSlot: given Player1's current Y slot
+            playerCount: given Player1's serial number */
         for (int i = 0; i < _maxPlayerCount; i++){
             if (addedPlayersList[i].PlayerYSlot > playerSlot){
                  addedPlayersList[i].UpdatePosition(addedPlayersList[i].PlayerYSlot - 1);
@@ -109,7 +113,8 @@ public class MainMenu : MonoBehaviour
             RemoveButtonsSetActive(false);
     }
 
-    public void RemoveButtonsSetActive(bool state)
+    private void RemoveButtonsSetActive(bool state)
+    /* Disables Remove Button for every Player1*/
     {
         foreach (var addedPlayer in addedPlayersList)
         {

@@ -17,7 +17,6 @@ public class BoaBody : MonoBehaviour
     private bool _setPoints = false;
 
     List<Vector2> _points;
-    // Start is called before the first frame update
     void Start()
     {
         _line = GetComponent<LineRenderer>();
