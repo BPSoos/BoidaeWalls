@@ -28,9 +28,9 @@ public class BoaBody : MonoBehaviour
         for(int i = 1; i < 5; i++){
             if (transform.parent.name.Contains(i.ToString()))
             {
-                _line.startColor = PlayerData.GamePlayers[i-1].PlayerColor;
-                _line.endColor = PlayerData.GamePlayers[i-1].PlayerColor;
-                myHead.GetComponent<SpriteRenderer>().color = PlayerData.GamePlayers[i-1].PlayerColor;
+                _line.startColor = PlayerData.GamePlayers[i-1].selfColor;
+                _line.endColor = PlayerData.GamePlayers[i-1].selfColor;
+                myHead.GetComponent<SpriteRenderer>().color = PlayerData.GamePlayers[i-1].selfColor;
             }
         }
         _points = new List<Vector2>();

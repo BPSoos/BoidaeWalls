@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -16,20 +17,22 @@ public class MainMenu : MonoBehaviour
     private int _maxPlayerCount = 8;
     public int TestPlayerAmount;
     public void PlayGame(){
-        for (int i =0; i < TestPlayerAmount; i++){
-            var addMe = new Player(addedPlayersList[i].serialNumber,
-                            PlayerData.BasicColorDict[addedPlayersList[i].currentColor]);
-        PlayerData.GamePlayers.Add(addMe);
-        
-        Debug.Log(PlayerData.GamePlayers[i].PlayerID.ToString() + " player added with color " +
-                            PlayerData.GamePlayers[i].PlayerColor.ToString());
+        foreach (var addedPlayer in addedPlayersList)
+        {
+            if (addedPlayer.gameObject.activeSelf)
+            {
+                Player addMe = new Player(id: addedPlayer.serialNumber,
+                                        color: PlayerData.BasicColorDict[addedPlayer.currentColor],
+                                        addedPlayer.playerLeftControl.GetComponent<TextMeshProUGUI>().text,
+                                        addedPlayer.playerRightControl.GetComponent<TextMeshProUGUI>().text,
+                                        addedPlayer.playerName.GetComponent<InputField>().text);
+                PlayerData.GamePlayers.Add(addMe);
+            }
         }
-
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex  + 1);
     }
 
-    void Update() {
-        
+    void Update() 
+    {
     }
     void Start()
     {
@@ -60,6 +63,8 @@ public class MainMenu : MonoBehaviour
                 }
             }
             _firstEmptySlot ++;
+            if(_firstEmptySlot == 3)
+                RemoveButtonsSetActive(true);
         }else{
             Debug.Log("Max Players reached");
         }
@@ -79,6 +84,7 @@ public class MainMenu : MonoBehaviour
                 addedPlayersList[i].ColorSelected(PlayerData.BasicColorDict.Keys.ElementAt(i));
             }
         }
+        RemoveButtonsSetActive(false);
     }
 
     public void PlayerColorSelected(bool setState, string colorOfButton, int playerIndexWhoChoose){
@@ -90,17 +96,24 @@ public class MainMenu : MonoBehaviour
     }
 
     public void PlayerRemoved(int playerSlot, int playerCount){
-        int lastSlot = playerSlot;
         for (int i = 0; i < _maxPlayerCount; i++){
             if (addedPlayersList[i].PlayerYSlot > playerSlot){
                  addedPlayersList[i].UpdatePosition(addedPlayersList[i].PlayerYSlot - 1);
             }
         }
         addedPlayersList[playerCount].UpdatePosition(7);
-        addedPlayersList[playerCount].ColorSelected(addedPlayersList[playerCount].currentColor);
+        if (addedPlayersList[playerCount].currentColor != "")
+            addedPlayersList[playerCount].ColorSelected(addedPlayersList[playerCount].currentColor);
         _firstEmptySlot --;
-        if (_firstEmptySlot == 0)
-            transform.Find("PlayButton").gameObject.SetActive(false);
-        
+        if(_firstEmptySlot == 2)
+            RemoveButtonsSetActive(false);
+    }
+
+    public void RemoveButtonsSetActive(bool state)
+    {
+        foreach (var addedPlayer in addedPlayersList)
+        {
+            addedPlayer.PlayerExitButton.SetActive(state);
+        }
     }
 }
