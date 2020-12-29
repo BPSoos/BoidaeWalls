@@ -146,12 +146,12 @@ public class PlayerUI : MonoBehaviour
         Debug.Log("Player " + direction + " ControlText set to : " + controlKey);
         if (direction == "Left")
         {
-            playerLeftControl.text = controlKey.ToString();
+            playerLeftControl.text = PlayerData.convertKeyCode(controlKey);
             leftControl = controlKey;
         }
         else
         {
-            playerRightControl.text = controlKey.ToString();
+            playerRightControl.text = PlayerData.convertKeyCode(controlKey);
             rigthControl = controlKey;
         }
         controlSettingOn = false;

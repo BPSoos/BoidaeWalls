@@ -53,4 +53,10 @@ public class GameManager : MonoBehaviour
         winText.text = "";
         SceneManager.LoadScene( SceneManager.GetActiveScene().buildIndex );
     }
+
+    public void MenuButton()
+    {
+        PlayerData.CleanUpPlayerData();
+        SceneManager.LoadScene(0);
+    }
 }

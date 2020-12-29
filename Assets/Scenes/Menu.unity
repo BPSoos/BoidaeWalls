@@ -1509,7 +1509,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1530767090}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1692206256}
+        m_MethodName: QuitGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1530767090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1825,8 +1836,6 @@ MonoBehaviour:
     type: 3}
   addedPlayersList: []
   TestPlayerAmount: 2
-  inputManager: {fileID: 4195145130772264067, guid: 68a6a356b63b8524ea7ad8727fb3d820,
-    type: 3}
 --- !u!1 &2054129957
 GameObject:
   m_ObjectHideFlags: 0
