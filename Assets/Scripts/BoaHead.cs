@@ -6,13 +6,12 @@ public class BoaHead : MonoBehaviour
      public float speed = 2.15f;
      public float rotationSpeed = 170f;
 
-     [FormerlySerializedAs("InputAxis")] public string inputAxis = "Horizontal";
+     public string inputAxis = "Horizontal";
      private float _horizontal = 0f;
-
-
-    void Update()
+     public BoaPlayer1 myPlayer;
+     void Update()
     {        
-        _horizontal = Input.GetAxisRaw(inputAxis);
+        _horizontal = GameInputManager.GetAxisRaw(inputAxis);
     }
 
     void FixedUpdate(){
@@ -25,11 +24,10 @@ public class BoaHead : MonoBehaviour
         if (col.tag == "deadlyObject"){
             speed = 0;
             rotationSpeed = 0;
-            GameManager myManager = GameObject.FindObjectOfType<GameManager>();
-            if (myManager.deadPlayers == 3)
-                myManager.EndGame();
-            else
-                myManager.deadPlayers ++;
+            myPlayer.lost = true;
+            myPlayer.myManager.deadPlayers ++;
+            if (myPlayer.myManager.deadPlayers == PlayerData.GamePlayers.Count - 1)
+                myPlayer.myManager.EndGame();
         }
     }
 }

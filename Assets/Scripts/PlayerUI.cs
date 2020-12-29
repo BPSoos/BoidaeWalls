@@ -15,6 +15,8 @@ public class PlayerUI : MonoBehaviour
     public int serialNumber {get; set;}
     public InputField playerName;
     public string currentColor = "";
+    public KeyCode leftControl;
+    public KeyCode rigthControl;
     private bool controlSettingOn = false;
     private string controlSettingDirection;
     public TextMeshProUGUI playerLeftControl;
@@ -143,9 +145,15 @@ public class PlayerUI : MonoBehaviour
             controlKey: the captured keypress to set the control with*/
         Debug.Log("Player " + direction + " ControlText set to : " + controlKey);
         if (direction == "Left")
+        {
             playerLeftControl.text = controlKey.ToString();
+            leftControl = controlKey;
+        }
         else
+        {
             playerRightControl.text = controlKey.ToString();
+            rigthControl = controlKey;
+        }
         controlSettingOn = false;
         transform.Find("ColorSettingText" + direction).gameObject.SetActive(false);
         // ideally, we should check here  or (somewhere) if the pressed key is among the acceptable ones and it is not used currently

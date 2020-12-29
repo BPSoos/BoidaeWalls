@@ -36,7 +36,7 @@ public class GamePlayer
     }
 
     private string _left;
-    public string left 
+    public string left
     {
         get
         {

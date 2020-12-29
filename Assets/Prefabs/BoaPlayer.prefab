@@ -331,4 +331,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 15
   rotationSpeed: 160
-  InputAxis: Horizontal
+  inputAxis: Horizontal

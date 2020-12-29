@@ -27,8 +27,11 @@ public class MainMenu : MonoBehaviour
                                         addedPlayer.playerRightControl.GetComponent<TextMeshProUGUI>().text,
                                         addedPlayer.playerName.GetComponent<InputField>().text);
                 PlayerData.GamePlayers.Add(addMe);
+                Debug.Log("Horizontal" + addedPlayer.serialNumber);
+                GameInputManager.axisMap.Add("Horizontal" + addedPlayer.serialNumber, new GameInputManager.AxisKeys{ positive = addedPlayer.leftControl, negative = addedPlayer.rigthControl});
             }
         }
+        SceneManager.LoadScene(1);
     }
 
     void Update() 

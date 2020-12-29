@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(LineRenderer))]
 [RequireComponent(typeof(EdgeCollider2D))]
@@ -10,7 +11,7 @@ public class BoaBody : MonoBehaviour
     
     public float pointSpacing = .5f;
     public Transform myHead;
-    LineRenderer _line;
+    public LineRenderer line;
     EdgeCollider2D _col;
     CircleCollider2D _headCol;
 
@@ -19,19 +20,10 @@ public class BoaBody : MonoBehaviour
     List<Vector2> _points;
     void Start()
     {
-        _line = GetComponent<LineRenderer>();
+        line = GetComponent<LineRenderer>();
         _col = GetComponent<EdgeCollider2D>();
         _headCol = transform.parent.GetComponentInChildren<CircleCollider2D>();
         _headCol.enabled = false;
-
-        for(int i = 1; i < 5; i++){
-            if (transform.parent.name.Contains(i.ToString()))
-            {
-                _line.startColor = PlayerData.GamePlayers[i-1].selfColor;
-                _line.endColor = PlayerData.GamePlayers[i-1].selfColor;
-                myHead.GetComponent<SpriteRenderer>().color = PlayerData.GamePlayers[i-1].selfColor;
-            }
-        }
         _points = new List<Vector2>();
         myHead.position = new Vector3(Random.Range(-35, 35), Random.Range(-35, 35), 0);
         myHead.Rotate(Vector3.forward * Random.Range(0, 360));
@@ -57,8 +49,8 @@ public class BoaBody : MonoBehaviour
 
         _points.Add(myHead.position);
 
-        _line.positionCount = _points.Count;
-        _line.SetPosition(_points.Count -1, myHead.position);
+        line.positionCount = _points.Count;
+        line.SetPosition(_points.Count -1, myHead.position);
 
     }
 

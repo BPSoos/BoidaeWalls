@@ -6,11 +6,11 @@
     <e p="D:\programozas\ZatackaUnity\BoidaeWalls" t="IncludeRecursive">
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
-        <e p="Farok.cs" t="Include" />
-        <e p="Fej.cs" t="Include" />
         <e p="Scripts" t="Include">
           <e p="BoaBody.cs" t="Include" />
           <e p="BoaHead.cs" t="Include" />
+          <e p="BoaPlayer1.cs" t="Include" />
+          <e p="GameInputManager.cs" t="Include" />
           <e p="GameManager.cs" t="Include" />
           <e p="GamePlayer.cs" t="Include" />
           <e p="MainMenu.cs" t="Include" />

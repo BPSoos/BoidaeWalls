@@ -1825,6 +1825,8 @@ MonoBehaviour:
     type: 3}
   addedPlayersList: []
   TestPlayerAmount: 2
+  inputManager: {fileID: 4195145130772264067, guid: 68a6a356b63b8524ea7ad8727fb3d820,
+    type: 3}
 --- !u!1 &2054129957
 GameObject:
   m_ObjectHideFlags: 0
